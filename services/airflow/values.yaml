@@ -1,0 +1,9 @@
+config:
+  # core:
+  #   dags_folder: /opt/airflow/dags
+  webserver:
+    expose_config: "True" # by default this is 'False'
+
+extraEnv: |
+  - name: AIRFLOW__WEBSERVER__INSTANCE_NAME
+    value: 'jacobs airflow bby'
