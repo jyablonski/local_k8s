@@ -104,6 +104,14 @@ kubectl rollout restart deployment airflow-webserver
 kubectl rollout restart deployment airflow-statsd
 
 kubectl get events --sort-by='.lastTimestamp'
+
+helm repo add trino https://trinodb.github.io/charts/
+
+helm search repo trino
+
+helm install trino trino/trino --version 1.38.0
+
+kubectl --namespace default port-forward svc/trino 8080:8080
 ```
 
 left off at getting the example dag file - seems like might have to create own docker image and bake the dags + task code inside like that.

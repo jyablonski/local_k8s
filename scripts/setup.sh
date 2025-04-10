@@ -13,11 +13,15 @@ kubectl apply -f ./services/metrics-server/deployment.yaml
 echo "Waiting for the Metrics Server to be ready..."
 kubectl rollout status deployment/metrics-server -n kube-system
 
-# Step 3: Apply all deployment files in the services/* directory
+# Step 3: build nginx deployment
 kubectl apply -f services/nginx/deployment.yaml
 
 echo "Setup completed!"
 
-# step 4: Apply Airflow
+# step 4: build airflow deployment
 helm upgrade --install airflow apache-airflow/airflow \
     -f services/airflow/values.yaml
+
+# step 5: build trino deployment
+helm upgrade --install trino trino/trino \
+    -f services/trino/values.yaml
