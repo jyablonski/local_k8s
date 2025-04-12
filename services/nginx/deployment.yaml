@@ -2,21 +2,23 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: nginx
-  name: nginx
+    app: nginx-deployment
+  name: nginx-deployment
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: nginx
+      app: nginx-deployment
   template:
     metadata:
       labels:
-        app: nginx
+        app: nginx-deployment
     spec:
       containers:
         - name: nginx
           image: nginx
+          ports:
+            - containerPort: 80
           resources:
             requests:
               memory: "256Mi" # Request 256 MiB of memory by default
@@ -24,3 +26,17 @@ spec:
             limits:
               memory: "512Mi" # Limit memory to 512 MiB
               cpu: "500m" # Limit CPU to 0.5 CPU
+
+          # these are for telling k8s when the container is ready and alive
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 15
+            periodSeconds: 20
